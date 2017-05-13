@@ -111,22 +111,22 @@ PreviewTab.prototype = Lib.extend(TabView.Tab.prototype,
         var buttons = [
             {
                 id: "showTimeline",
-                label: Strings.showTimelineButton,
+                label: Strings.hideTimelineButton,  //   update defaut to hideTimelineButton, date:2017-5-13 by liumingtong
                 tooltiptext: Strings.showTimelineTooltip,
                 command: Lib.bindFixed(this.onTimeline, this, true)
             },
             {
                 id: "showStats",
-                label: Strings.showStatsButton,
+                label: Strings.hideStatsButton,  // update defaut to hideStatsButton, date:2017-5-13 by liumingtong
                 tooltiptext: Strings.showStatsTooltip,
                 command: Lib.bindFixed(this.onStats, this, true)
-            },
+            }/*,
             {
                 id: "clear",
                 label: Strings.clearButton,
                 tooltiptext: Strings.clearTooltip,
                 command: Lib.bindFixed(this.onClear, this)
-            }
+            }*/   // 去除 clear har按钮, date:2017-5-13 by liumingtong
         ];
 
         buttons.push({
@@ -247,7 +247,16 @@ PreviewTab.prototype = Lib.extend(TabView.Tab.prototype,
 
         domTab.select("DOM");
         domTab.highlightFile(input, file);
+    },
+    /** add showTimelineStat(),timelineStatIsVisible()。 date:2017-5-13 by liumingtong start **/
+    showTimelineStat() {
+    	this.timeline.show();
+    	this.stats.show();
+    },
+    timelineStatIsVisible(){
+    	return this.timeline.isVisible() && this.stats.isVisible();
     }
+    /** add call click，timeline、Stats defaut show。 date:2017-5-13 by liumingtong end **/
 });
 
 //*************************************************************************************************
