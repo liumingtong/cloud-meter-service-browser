@@ -16,6 +16,7 @@ public class PageSummary {
 	String totalSize;
 	// 负载onload大小
 	String onLoadSize;
+	
 	public String getId() {
 		return id;
 	}

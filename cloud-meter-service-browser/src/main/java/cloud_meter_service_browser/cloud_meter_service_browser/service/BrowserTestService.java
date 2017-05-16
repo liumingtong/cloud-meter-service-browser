@@ -6,14 +6,21 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.jayway.jsonpath.JsonPath;
+
+import cloud_meter_service_browser.cloud_meter_service_browser.constants.HarSummaryConstants;
 import cloud_meter_service_browser.cloud_meter_service_browser.modle.HarSummary;
 import cloud_meter_service_browser.cloud_meter_service_browser.modle.PageSummary;
+import net.sf.json.JSON;
+
 /**
  * 浏览器测试业务类
  * 
@@ -38,40 +45,64 @@ public class BrowserTestService {
 
 	public String generateHarSummary(String harJson) {
 		String fullFileName = "E:\\home\\git\\cloudmeter\\cloudmeter-agent\\cloud-meter-agent\\src\\main\\resources/static/harfile/task123456.har";
-		String data = ConvertStream2Json(fullFileName);
-		
-		JSONObject jsonObject = new JSONObject(data);
-		JSONArray jsonArray = jsonObject.getJSONObject("log").getJSONArray("pages");
-		Iterator<Object> iterator = jsonArray.iterator();
-		while (iterator.hasNext()) {
-			JSONObject page = (JSONObject)iterator.next();
-			System.out.println(page.toString());
-		}
+		String dataJson = ConvertStream2Json(fullFileName);
+
+		JSONObject jsonObject = new JSONObject(dataJson);
 		List<PageSummary> pageSummaries = new ArrayList<PageSummary>();
+		JSONArray pagesArray = jsonObject.getJSONObject("log").getJSONArray("pages");
+
+		Iterator<Object> iterator = pagesArray.iterator();
+		while (iterator.hasNext()) {
+			JSONObject pageObj = (JSONObject) iterator.next();
+			
+			pageSummaries.add(generatePageSummary(pageObj, dataJson));
+		}
+		
 
 		HarSummary harSummary = new HarSummary();
 		harSummary.setPageSummaries(pageSummaries);
 
-		return JSONObject.valueToString(harSummary);
+		return JSONObject.wrap(harSummary).toString();
 	}
 
-	/*
-	 * public String generatePageSummary(JSONObject jsonObject) { int onLoadSize
-	 * = jsonObject.getString(""); String requestCount =
-	 * jsonObject.getString(""); String totalSize = jsonObject.getString("");
-	 * String totalTime = jsonObject.getString("");
-	 * 
-	 * Map<String, Integer> respCodeCount = new HashMap<String, Integer>();
-	 * HarSummary summay = new HarSummary(); summay.setOnLoadSize(onLoadSize);
-	 * summay.setRequestCount(requestCount);
-	 * summay.setRespCodeCount(respCodeCount); summay.setTotalSize(totalSize);
-	 * summay.setTotalTime(totalTime);
-	 * 
-	 * return summayJson.toString(); }
+	
+	private PageSummary generatePageSummary(JSONObject pageObj, String dataJson) {
+		if(pageObj == null) {
+			return null;
+		}
+		PageSummary pageSummary = new PageSummary();
+		//设置加载页面的概要信息
+		setPageInfo(pageObj, pageSummary);
+
+		List<Integer> totalSizeList = JsonPath.read(dataJson, "$.log.entries[?(@.pageref == '"+pageSummary.getId()+"')].response.content.size");
+		int totalSize = 0;
+		for(Integer size : totalSizeList) {
+			totalSize += size;
+		}
+		pageSummary.setTotalSize(String.valueOf(totalSize));
+		return pageSummary;
+	}
+	
+	/**
+	 * 设置log/page的信息
+	 * @param pageObj
+	 * @param pageSummary
 	 */
+	private void setPageInfo(JSONObject pageObj, PageSummary pageSummary) {
+		if(pageObj == null || pageSummary == null) {
+			return;
+		}
+		String startedDateTime = pageObj.getString(HarSummaryConstants.STARTED_DATE_TIME);
+		String id = pageObj.getString(HarSummaryConstants.ID);
+		JSONObject pageTimingsObj = (JSONObject)pageObj.get(HarSummaryConstants.PAGE_TIMINGS);
+		String onLoadSize = pageTimingsObj.get(HarSummaryConstants.ON_LOAD).toString();
+		pageSummary.setId(id);
+		pageSummary.setStartedDateTime(startedDateTime);
+		pageSummary.setOnLoadSize(onLoadSize);
+	}
 
 	public static void main(String[] args) {
-		BrowserTestService.getInstance().generateHarSummary("");
+		System.out.println(BrowserTestService.getInstance().generateHarSummary(""));
 	}
 
 	private String ConvertStream2Json(String fullFileName) {
@@ -93,6 +124,6 @@ public class BrowserTestService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return jsonStr; 
+		return jsonStr;
 	}
 }

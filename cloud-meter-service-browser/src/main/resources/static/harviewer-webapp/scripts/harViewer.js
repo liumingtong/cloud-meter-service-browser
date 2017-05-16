@@ -34,11 +34,11 @@ function HarView()
     this.model = new HarModel();
 
     // Append tabs
-   // this.appendTab(new HomeTab());    //不构建homeTab页， update, date:2017-5-13 by liumingtong
-    this.appendTab(new PreviewTab(this.model));
-    //this.appendTab(new DomTab());
-    //this.appendTab(new AboutTab());    //不构建homeTab页， update, date:2017-5-13 by liumingtong
-    //this.appendTab(new SchemaTab());
+   // this.appendTab(new HomeTab()); //不构建homeTab页， update, date:2017-5-13 by liumingtong
+    this.appendTab(new PreviewTab(this.model)); 
+   // this.appendTab(new DomTab()); //不构建DomTab页， update, date:2017-5-13 by liumingtong
+   // this.appendTab(new AboutTab()); //不构建AboutTab页， update, date:2017-5-13 by liumingtong
+   // this.appendTab(new SchemaTab()); //不构建SchemaTab页， update, date:2017-5-13 by liumingtong
 }
 
 /**
@@ -84,7 +84,7 @@ HarView.prototype = Lib.extend(new TabView(),
             if (homeTab)
                 homeTab.loadInProgress(true);
         }
-        this.appendPreview();
+        this.appendPreview();    //添加preview页， update, date:2017-5-13 by liumingtong
     },
 
     appendPreview: function(jsonString)
@@ -129,9 +129,8 @@ HarView.prototype = Lib.extend(new TabView(),
                 // Make sure the tab is rendered now.
                 try
                 {
-                	previewTab.select();
+                    previewTab.select();
                     previewTab.append(input);
-                    
                     /** add call click，timeline、Stats defaut show。 date:2017-5-13 by liumingtong start **/
                     if(previewTab.timelineStatIsVisible()){
                     	previewTab.onTimeline();  
@@ -154,13 +153,13 @@ HarView.prototype = Lib.extend(new TabView(),
             // is switched off, otherwise HarModel.parse() throws an exception.
             if (domTab)
                 domTab.append(input);
-        //}
         }
         catch (err)
         {
             Trace.exception("HarView.appendPreview; EXCEPTION ", err);
             if (err.errors && previewTab)
                 previewTab.appendError(err);
+
             // xxxHonza: display JSON tree even if validation throws an exception
             if (err.input)
                 domTab.append(err.input);
@@ -174,7 +173,6 @@ HarView.prototype = Lib.extend(new TabView(),
             homeTab.loadInProgress(false);
 
         Lib.fireEvent(content, "onViewerHARLoaded");
-        
     },
 
     onLoadError: function(jqXHR, textStatus, errorThrown)

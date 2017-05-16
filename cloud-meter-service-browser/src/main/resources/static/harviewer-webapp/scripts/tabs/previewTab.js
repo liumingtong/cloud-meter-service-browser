@@ -111,22 +111,14 @@ PreviewTab.prototype = Lib.extend(TabView.Tab.prototype,
         var buttons = [
             {
                 id: "showTimeline",
-<<<<<<< HEAD
-                label: Strings.hideTimelineButton,  //   update defaut to hideTimelineButton, date:2017-5-13 by liumingtong
-=======
-                label: Strings.hideTimelineButton,  //   update defaut to hideTimelineButton
->>>>>>> refs/remotes/origin/master
-                tooltiptext: Strings.showTimelineTooltip,
+                label: Strings.hideTimelineButton,   // update defaut to hideTimelineButton, date:2017-5-13 by liumingtong
+                tooltiptext: Strings.hideTimelineTooltip,   //update defaut to hideTimelineTooltip, date:2017-5-13 by liumingtong
                 command: Lib.bindFixed(this.onTimeline, this, true)
             },
             {
                 id: "showStats",
-<<<<<<< HEAD
-                label: Strings.hideStatsButton,  // update defaut to hideStatsButton, date:2017-5-13 by liumingtong
-=======
-                label: Strings.hideStatsButton,  // update defaut to hideStatsButton
->>>>>>> refs/remotes/origin/master
-                tooltiptext: Strings.showStatsTooltip,
+                label: Strings.hideStatsButton,   //update defaut to hideStatsButton, date:2017-5-13 by liumingtong
+                tooltiptext: Strings.hideStatsTooltip,   //update defaut to hideStatsTooltip, date:2017-5-13 by liumingtong
                 command: Lib.bindFixed(this.onStats, this, true)
             }/*,
             {
@@ -134,7 +126,7 @@ PreviewTab.prototype = Lib.extend(TabView.Tab.prototype,
                 label: Strings.clearButton,
                 tooltiptext: Strings.clearTooltip,
                 command: Lib.bindFixed(this.onClear, this)
-            }*/   // 去除 clear har按钮, date:2017-5-13 by liumingtong
+            }*/  // 去除 clear har按钮, date:2017-5-13 by liumingtong
         ];
 
         buttons.push({

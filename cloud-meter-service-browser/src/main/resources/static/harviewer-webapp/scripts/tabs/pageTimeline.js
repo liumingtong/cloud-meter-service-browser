@@ -348,7 +348,7 @@ Timeline.prototype = domplate(
         // If it's not rendered yet, bail out.
         if (!this.element)
             return;
-        graphCols
+
         // Otherwise just append a new columns to the existing graph.
         var timelineRow = Lib.getElementByClass(this.element, "pageTimelineRow");
         this.graphCols.insertCols({input: input}, timelineRow, this);

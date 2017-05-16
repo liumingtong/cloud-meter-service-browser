@@ -16,7 +16,7 @@ public class HarJsonController {
     }  
     @RequestMapping("/get-har-json/{taskId}")  
     String getHarJson(@PathVariable String taskId) {      	
-        return "/harfile/" + taskId +".harss";  
+        return "/harfile/" + taskId +".har";  
     }
        
 }
