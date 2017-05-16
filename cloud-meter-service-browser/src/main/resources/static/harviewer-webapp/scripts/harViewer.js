@@ -175,6 +175,17 @@ HarView.prototype = Lib.extend(new TabView(),
 
         Lib.fireEvent(content, "onViewerHARLoaded");
         
+<<<<<<< HEAD
+=======
+        /** add call click，timeline、Stats defaut show。 date:2017-5-13 by liumingtong start **/
+       
+        if(previewTab.timelineStatIsVisible()){
+        	previewTab.onTimeline();  
+        	previewTab.onStats();
+    	}
+        previewTab.showTimelineStat();
+        /** add call click，timeline、Stats defaut show。 date:2017-5-13 by liumingtong end **/
+>>>>>>> refs/remotes/origin/master
     },
 
     onLoadError: function(jqXHR, textStatus, errorThrown)

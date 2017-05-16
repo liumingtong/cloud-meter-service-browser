@@ -111,13 +111,21 @@ PreviewTab.prototype = Lib.extend(TabView.Tab.prototype,
         var buttons = [
             {
                 id: "showTimeline",
+<<<<<<< HEAD
                 label: Strings.hideTimelineButton,  //   update defaut to hideTimelineButton, date:2017-5-13 by liumingtong
+=======
+                label: Strings.hideTimelineButton,  //   update defaut to hideTimelineButton
+>>>>>>> refs/remotes/origin/master
                 tooltiptext: Strings.showTimelineTooltip,
                 command: Lib.bindFixed(this.onTimeline, this, true)
             },
             {
                 id: "showStats",
+<<<<<<< HEAD
                 label: Strings.hideStatsButton,  // update defaut to hideStatsButton, date:2017-5-13 by liumingtong
+=======
+                label: Strings.hideStatsButton,  // update defaut to hideStatsButton
+>>>>>>> refs/remotes/origin/master
                 tooltiptext: Strings.showStatsTooltip,
                 command: Lib.bindFixed(this.onStats, this, true)
             }/*,
