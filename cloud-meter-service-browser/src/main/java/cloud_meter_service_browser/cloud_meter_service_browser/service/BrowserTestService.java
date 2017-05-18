@@ -43,7 +43,7 @@ public class BrowserTestService {
 		return instance;
 	}
 
-	public String generateHarSummary(String harJson) {
+	public String generateHarSummary(String harJson) { 
 		String fullFileName = "E:\\home\\git\\cloudmeter\\cloudmeter-agent\\cloud-meter-agent\\src\\main\\resources/static/harfile/task123456.har";
 		String dataJson = ConvertStream2Json(fullFileName);
 
