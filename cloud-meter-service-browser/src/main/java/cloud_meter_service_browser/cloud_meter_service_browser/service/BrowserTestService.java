@@ -50,7 +50,6 @@ public class BrowserTestService {
 		JSONObject jsonObject = new JSONObject(dataJson);
 		List<PageSummary> pageSummaries = new ArrayList<PageSummary>();
 		JSONArray pagesArray = jsonObject.getJSONObject("log").getJSONArray("pages");
-
 		Iterator<Object> iterator = pagesArray.iterator();
 		while (iterator.hasNext()) {
 			JSONObject pageObj = (JSONObject) iterator.next();
@@ -74,12 +73,28 @@ public class BrowserTestService {
 		//设置加载页面的概要信息
 		setPageInfo(pageObj, pageSummary);
 
-		List<Integer> totalSizeList = JsonPath.read(dataJson, "$.log.entries[?(@.pageref == '"+pageSummary.getId()+"')].response.content.size");
+		List<Integer> bodySizeList = JsonPath.read(dataJson, "$.log.entries[?(@.pageref == '"+pageSummary.getId()+"')].response.bodySize");
 		int totalSize = 0;
-		for(Integer size : totalSizeList) {
+		for(Integer size : bodySizeList) {
 			totalSize += size;
 		}
 		pageSummary.setTotalSize(String.valueOf(totalSize));
+		
+		//计算响应码个数
+		List<Integer> respCodeList = JsonPath.read(dataJson, "$.log.entries[?(@.pageref == '"+pageSummary.getId()+"')].response.status");
+		Map<String, Integer> respCodeCount = new HashMap<String, Integer>();
+		for(Integer respCode : respCodeList) {
+			String respCodeStr = String.valueOf(respCode);
+			int newCount = 0;
+			if(respCodeCount.keySet().contains(respCodeStr)) {
+				newCount = respCodeCount.get(respCodeStr);
+			}
+			newCount ++;
+			respCodeCount.put(respCodeStr, newCount);
+		}
+		pageSummary.setRespCodeCount(respCodeCount);
+		//请求数
+		pageSummary.setRequestCount(String.valueOf(respCodeList.size()));
 		return pageSummary;
 	}
 	
@@ -95,10 +110,10 @@ public class BrowserTestService {
 		String startedDateTime = pageObj.getString(HarSummaryConstants.STARTED_DATE_TIME);
 		String id = pageObj.getString(HarSummaryConstants.ID);
 		JSONObject pageTimingsObj = (JSONObject)pageObj.get(HarSummaryConstants.PAGE_TIMINGS);
-		String onLoadSize = pageTimingsObj.get(HarSummaryConstants.ON_LOAD).toString();
+		String onLoadTime = pageTimingsObj.get(HarSummaryConstants.ON_LOAD).toString();
 		pageSummary.setId(id);
 		pageSummary.setStartedDateTime(startedDateTime);
-		pageSummary.setOnLoadSize(onLoadSize);
+		pageSummary.setOnLoadTime(onLoadTime);
 	}
 
 	public static void main(String[] args) {

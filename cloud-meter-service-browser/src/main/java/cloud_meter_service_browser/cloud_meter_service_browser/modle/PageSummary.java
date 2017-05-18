@@ -14,8 +14,8 @@ public class PageSummary {
 	Map<String, Integer> respCodeCount;
 	// 网页加载总大小
 	String totalSize;
-	// 负载onload大小
-	String onLoadSize;
+	// 负载onload的时间
+	String onLoadTime;
 	
 	public String getId() {
 		return id;
@@ -53,12 +53,11 @@ public class PageSummary {
 	public void setTotalSize(String totalSize) {
 		this.totalSize = totalSize;
 	}
-	public String getOnLoadSize() {
-		return onLoadSize;
+	public String getOnLoadTime() {
+		return onLoadTime;
 	}
-	public void setOnLoadSize(String onLoadSize) {
-		this.onLoadSize = onLoadSize;
+	public void setOnLoadTime(String onLoadTime) {
+		this.onLoadTime = onLoadTime;
 	}
-
 	
 }
